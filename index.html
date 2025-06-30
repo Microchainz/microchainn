@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SYSTEM ALERT</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background-color: #000;
+            color: #0f0;
+            font-family: 'Courier New', monospace;
+            overflow: hidden;
+        }
+        .terminal {
+            padding: 20px;
+            height: 100vh;
+        }
+        .cursor {
+            animation: blink 1s infinite;
+        }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        .glitch {
+            animation: glitch 2s linear infinite;
+        }
+        @keyframes glitch {
+            2%, 64% { transform: translate(2px, 0) skew(0deg); }
+            4%, 60% { transform: translate(-2px, 0) skew(0deg); }
+            62% { transform: translate(0, 0) skew(5deg); }
+        }
+        .scanlines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                rgba(0, 255, 0, 0.05) 50%,
+                transparent 50%
+            );
+            background-size: 100% 4px;
+            pointer-events: none;
+            z-index: 100;
+        }
+    </style>
+</head>
+<body>
+    <div class="scanlines"></div>
+    <audio id="cameraSound" preload="auto"></audio>
+    <audio id="alertSound" preload="auto"></audio>
+    <audio id="hackerSound" preload="auto"></audio>
+    <audio id="cameraSound" preload="auto"></audio>
+    <audio id="alertSound" preload="auto"></audio>
+    <audio id="hackerSound" preload="auto"></audio>
+    <div class="terminal" id="terminal">
+        <div class="text-xl mb-4">
+            <span style="color: #ff0000;">WARNING:</span> 🧾 Menyalin file: credentials.db (Berhasil)
+        </div>
+        <div id="output"></div>
+        <div class="text-xl">
+            root@Microchain:<span class="cursor">█</span>
+        </div>
+    </div>
+
+    <script>
+        const messages = [
+            { text: "Initializing exploit framework...", delay: 400 },
+            { text: "Scanning network...", delay: 400 },
+            { text: "Accessing your camera...", delay: 800 },
+            { text: "CAMERA ACCESS GRANTED", delay: 1200, color: "#ff0000" },
+            { text: "CAPTURING PHOTO...", delay: 1800, color: "#ff0000" },
+            { text: "PHOTO CAPTURED AND UPLOADED", delay: 1000, color: "#ff0000" },
+            { text: "ACCESSING WHATSAPP MESSAGES...", delay: 100, color: "#ff0000" },
+            { text: "WHATSAPP DATABASE COMPROMISED", delay: 200, color: "#ff0000" },
+            { text: "EXFILTRATING PERSONAL DATA...", delay: 100, color: "#ff0000" },
+            { text: "LOCATING YOUR PHYSICAL ADDRESS...", delay: 6000, color: "#ff0000" },
+            { text: "ADDRESS FOUND: ", delay: 6500, color: "#ff0000" },
+            { text: "YOUR LOCATION HAS BEEN MARKED", delay: 200, color: "#ff0000" },
+            { text: "CLEANING TRACES...", delay: 7500 },
+            { text: "TERMINATING CONNECTION...", delay: 8000 }
+        ];
+
+        let currentIndex = 0;
+        const outputElement = document.getElementById('output');
+
+        function displayNextMessage() {
+            if (currentIndex >= messages.length) return;
+
+            const message = messages[currentIndex];
+            
+            setTimeout(() => {
+                const messageElement = document.createElement('div');
+                messageElement.textContent = message.text;
+                if (message.color) {
+                    messageElement.style.color = message.color;
+                }
+                
+                if (message.glitch) {
+                    messageElement.classList.add('glitch');
+                }
+                
+                outputElement.appendChild(messageElement);
+                window.scrollTo(0, document.body.scrollHeight);
+                
+                currentIndex++;
+                displayNextMessage();
+                
+                // Play sounds for specific actions
+                if (message.text === "CAMERA ACCESS GRANTED") {
+                    document.getElementById('alertSound').play();
+                }
+                else if (message.text === "CAPTURING PHOTO...") {
+                    setTimeout(() => {
+                        document.getElementById('cameraSound').play();
+                    }, 800);
+                }
+                else if (message.text.includes("WHATSAPP")) {
+                    document.getElementById('hackerSound').play();
+                }
+
+                // Play sounds for specific events
+                if (message.text === "CAMERA ACCESS GRANTED") {
+                    document.getElementById('alertSound').play();
+                }
+                else if (message.text === "CAPTURING PHOTO...") {
+                    setTimeout(() => {
+                        document.getElementById('cameraSound').play();
+                    }, 800);
+                }
+                else if (message.text.includes("WHATSAPP")) {
+                    document.getElementById('hackerSound').play();
+                }
+
+                // Show fake photo capture
+                if (message.text === "PHOTO CAPTURED AND UPLOADED") {
+                    setTimeout(() => {
+                        const photoElement = document.createElement('div');
+                        photoElement.innerHTML = '<div class="border border-red-500 p-2 my-2">[CAPTURED PHOTO]</div>';
+                        messageElement.appendChild(photoElement);
+                    }, 500);
+                }
+                // Show fake WhatsApp messages
+                else if (message.text === "WHATSAPP DATABASE COMPROMISED") {
+                    setTimeout(() => {
+                        const whatsappElement = document.createElement('div');
+                        whatsappElement.innerHTML = '<div class="border border-red-500 p-2 my-2">[WHATSAPP MESSAGES EXTRACTED]</div>';
+                        messageElement.appendChild(whatsappElement);
+                    }, 500);
+                }
+                // Show fake address on location found
+                else if (message.text === "ADDRESS FOUND: ") {
+                    setTimeout(() => {
+                        const fakeLocation = document.createElement('span');
+                        fakeLocation.textContent = "[YOUR REAL ADDRESS HERE]";
+                        fakeLocation.style.color = "#ff0000";
+                        fakeLocation.style.fontWeight = "bold";
+                        messageElement.appendChild(fakeLocation);
+                    }, 500);
+                }
+            }, message.delay);
+        }
+
+        // Create base64 audio sources
+        function initAudio() {
+            const cameraSound = document.getElementById('cameraSound');
+            cameraSound.innerHTML = '<source src="data:audio/mpeg;base64,SUQzBAAAAAABEVRY...[truncated]..." type="audio/mpeg">';
+            
+            const alertSound = document.getElementById('alertSound');
+            alertSound.innerHTML = '<source src="data:audio/mpeg;base64,SUQzBAAAAAABEVRY...[truncated]..." type="audio/mpeg">';
+            
+            const hackerSound = document.getElementById('hackerSound');
+            hackerSound.innerHTML = '<source src="data:audio/mpeg;base64,SUQzBAAAAAABEVRY...[truncated]..." type="audio/mpeg">';
+            
+            // Request audio permissions on first interaction
+            cameraSound.play().then(() => {
+                cameraSound.pause();
+                cameraSound.currentTime = 0;
+            });
+        }
+
+        // Initialize audio on first click
+        document.addEventListener('click', function() {
+            initAudio();
+            document.getElementById('cameraSound').play().then(() => {
+                document.getElementById('cameraSound').pause();
+                document.getElementById('cameraSound').currentTime = 0;
+            });
+        }, { once: true });
+
+        // Initialize audio sources
+        function initAudio() {
+            const cameraSound = document.getElementById('cameraSound');
+            cameraSound.src = 'https://assets.mixkit.co/sfx/preview/mixkit-camera-shutter-923.mp3';
+            
+            const alertSound = document.getElementById('alertSound');
+            alertSound.src = 'https://assets.mixkit.co/sfx/preview/mixkit-sci-fi-alarm-905.mp3';
+            
+            const hackerSound = document.getElementById('hackerSound');
+            hackerSound.src = 'https://assets.mixkit.co/sfx/preview/mixkit-quick-jump-arcade-game-239.mp3';
+        }
+
+        // Initialize audio on first click
+        document.addEventListener('click', function() {
+            initAudio();
+        }, { once: true });
+
+        // Start displaying messages
+        displayNextMessage();
+
+        // Make page fullscreen and prevent exit
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'F11') e.preventDefault();
+            if (e.key === 'Escape') {
+                alert("ESCAPE NOT ALLOWED\nSYSTEM LOCKDOWN INITIATED");
+                document.documentElement.requestFullscreen();
+            }
+        });
+
+        // Fake mouse lock
+        document.addEventListener('mousemove', function() {
+            document.documentElement.requestFullscreen().catch(() => {});
+        });
+    </script>
+</body>
+</html>
